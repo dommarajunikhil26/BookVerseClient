@@ -34,15 +34,15 @@ const Header = () => {
                             aria-expanded="false"
                             onClick={handleMenuClick}
                         >
-                            <span className="absolute -inset-0.5"></span>
-                            {/* <!--Icon when menu is closed. Menu open: "hidden", Menu closed: "block"--> */}
-                            <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                            </svg>
-                            {/* <!--Icon when menu is open. Menu open: "block", Menu closed: "hidden" --> */}
-                            <svg className="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
+                            {clicked ? (
+                                <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            ) : (
+                                <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                                </svg>
+                            )}
                         </button>
                     </div>
                     <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
@@ -70,16 +70,14 @@ const Header = () => {
             </div>
 
             {/* <!-- Mobile menu, show/hide based on menu state. --> */}
-            {clicked ?
+            {clicked && (
                 <div className="sm:hidden" id="mobile-menu">
                     <div className="space-y-1 px-2 pb-3 pt-2">
-                        {/* <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" --> */}
-                        <button className="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page" onClick={handleHomeClick}>Home</button>
+                        <button className="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" onClick={handleHomeClick}>Home</button>
                         <button className="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium" onClick={handleSearchClick}>Search Books</button>
                     </div>
                 </div>
-                : <></>
-            }
+            )}
         </nav>
 
     )
