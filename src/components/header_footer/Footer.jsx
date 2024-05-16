@@ -1,8 +1,13 @@
 
 
 const Footer = () => {
+    const date = new Date();
+    const year = date.getFullYear();
+
     return (
-        <div>Footer</div>
+        <footer className="bg-blue-950 absolute bottom-0 w-full p-3">
+            <p className="text-gray-50 font-medium text-center text-sm">Nikhil Sai Dommaraju. @All Rights Reserved {year}</p>
+        </footer>
     )
 }
 
