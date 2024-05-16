@@ -1,11 +1,15 @@
 import { useState } from "react"
 import logo from "../../assets/logo/bookLogo.jpg";
+import { useNavigate } from 'react-router-dom';
 
 const Signin = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
+
+    const navigate = useNavigate();
+
 
     const handleEmailChange = (e) => {
         setEmail(e.target.value);
@@ -28,6 +32,10 @@ const Signin = () => {
     const validateEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
+    }
+
+    const handleRegisterClick = () => {
+        navigate("/register");
     }
 
     const handleFormSubmit = (e) => {
@@ -56,7 +64,7 @@ const Signin = () => {
                                 onChange={handleEmailChange}
                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
-                            {emailError && <p>{emailError}</p>}
+                            {emailError && <p className="text-red-500 text-xs font-semibold">{emailError}</p>}
                         </div>
                     </div>
 
@@ -77,7 +85,7 @@ const Signin = () => {
                                 onChange={handlePasswordChange}
                                 required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
-                            {passwordError && <p>{passwordError}</p>}
+                            {passwordError && <p className="text-red-500 text-xs font-semibold">{passwordError}</p>}
                         </div>
                     </div>
 
@@ -88,7 +96,7 @@ const Signin = () => {
 
                 <p className="mt-10 text-center text-sm text-gray-500">
                     Not a member?
-                    <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Start a 14 day free trial</a>
+                    <button className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 ml-1" onClick={handleRegisterClick}>Register Here!</button>
                 </p>
             </div>
         </div>
