@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updatePassword } from "firebase/auth";
 import { auth } from "../firebase/Firebase";
 
 const initialState = {
@@ -11,23 +11,52 @@ const initialState = {
 
 export const loginUser = createAsyncThunk(
     'auth/loginUser',
-    async ({ email, password }, { rejectedWithValue }) => {
+    async ({ email, password }, { rejectWithValue }) => {
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             return userCredential.user;
         } catch (error) {
-            return rejectedWithValue(error.message);
+            return rejectWithValue(error.message);
         }
     }
 );
 
 export const logoutUser = createAsyncThunk(
     'auth/logoutUser',
-    async (_, { rejectedWithValue }) => {
+    async (_, { rejectWithValue }) => {
         try {
             await signOut(auth);
         } catch (error) {
-            return rejectedWithValue(error.message);
+            return rejectWithValue(error.message);
+        }
+    }
+)
+
+export const registerUser = createAsyncThunk(
+    'auth/registerUser',
+    async ({ email, password }, { rejectWithValue }) => {
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            return userCredential.user;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+)
+
+export const changePassword = createAsyncThunk(
+    'auth/changePassword',
+    async (newPassword, { getState, rejectWithValue }) => {
+        try {
+            const user = auth.currentUser;
+            if (user) {
+                await updatePassword(user, newPassword);
+                return true;
+            } else {
+                throw new Error("User is not authenticated");
+            }
+        } catch (error) {
+            return rejectWithValue(error.message);
         }
     }
 )
@@ -63,6 +92,32 @@ const authSlice = createSlice({
                 state.error = null;
             })
             .addCase(logoutUser.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(registerUser.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(registerUser.fulfilled, (state, action) => {
+                state.isAuthenticated = false;
+                state.user = action.payload;
+                state.loading = false;
+                state.error = null;
+            })
+            .addCase(registerUser.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(changePassword.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(changePassword.fulfilled, (state) => {
+                state.loading = false;
+                state.error = null;
+            })
+            .addCase(changePassword.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             });

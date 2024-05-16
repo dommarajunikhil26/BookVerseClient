@@ -1,8 +1,20 @@
+import { useNavigate } from "react-router-dom";
 import Form from "../utility/Form";
+import { useDispatch } from "react-redux";
+import { changePassword } from "../authentication/authSlice";
 
 const ChangePassword = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
     const field1Validate = (value) => value.length >= 10 ? "" : "Password must be at least 10 characters";
     const field2Validate = (value, field1) => value === field1 ? "" : "Passwords do not match";
+
+    const handleSubmit = ({ field1: newPassword }) => {
+        dispatch(changePassword(newPassword)).then(() => {
+            navigate("/signin")
+        })
+    }
 
     return (
         <Form
@@ -16,6 +28,7 @@ const ChangePassword = () => {
             buttonName="Change Password"
             navigateExternalLink="signin"
             showForgotPassword={false}
+            onSubmit={handleSubmit}
         />
     );
 };

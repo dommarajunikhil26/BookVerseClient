@@ -15,7 +15,8 @@ const Form = ({
     signinButtonName,
     field1Validate,
     field2Validate,
-    field2AutoComplete = "current-password"
+    field2AutoComplete = "current-password",
+    onSubmit
 }) => {
     const [field1, setField1] = useState("");
     const [field2, setField2] = useState("");
@@ -42,7 +43,10 @@ const Form = ({
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        // Add form submission logic here
+        if (field1Error || field2Error) {
+            return;
+        }
+        onSubmit({ field1, field2 });
     };
 
     const handleForgotPasswordClick = () => {

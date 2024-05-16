@@ -1,10 +1,15 @@
 import { useState } from 'react';
 import logo from '../../assets/logo/bookLogo.jpg';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutUser } from '../authentication/authSlice';
 
 const Header = () => {
     const [clicked, setClicked] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const { isAuthenticated } = useSelector((state) => state.auth);
 
     const handleMenuClick = () => {
         setClicked(!clicked)
@@ -19,7 +24,13 @@ const Header = () => {
     }
 
     const handleSigninClick = () => {
-        navigate("/signin");
+        if (isAuthenticated) {
+            dispatch(logoutUser()).then(() => {
+                navigate("/signin");
+            });
+        } else {
+            navigate("/signin");
+        }
     }
     return (
         <header className="bg-gray-800">
@@ -61,7 +72,7 @@ const Header = () => {
                         <div className="relative ml-3">
                             <div>
                                 <button type="button" className="relative flex rounded-full bg-gray-800 text-sm border-[1px] border-gray-50 text-gray-300 hover:text-white px-3 py-2  font-medium" id="user-menu-button" aria-expanded="false" aria-haspopup="true" onClick={handleSigninClick}>
-                                    Sign in
+                                    {isAuthenticated ? "Log out" : "Sign in"}
                                 </button>
                             </div>
                         </div>
