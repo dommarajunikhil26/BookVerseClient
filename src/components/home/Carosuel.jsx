@@ -27,7 +27,7 @@ const Carosuel = () => {
     };
 
     return (
-        <div className='m-2 md:my-4 flex flex-col justify-center'>
+        <div className='p-2 md:my-4 flex flex-col justify-center'>
             <p className='text-center p-4 md:p-6 '>Find your next "I stayed up too late reading" book</p>
             <Carousel
                 additionalTransfrom={0}
@@ -57,7 +57,7 @@ const Carosuel = () => {
                 slidesToSlide={1}
                 swipeable
             >
-                <div>
+                <div className='px-4'>
                     <img src={book1} alt="Book 1" />
                     <h3 className='text-center text-lg font-semibold'>
                         Advanced Techniques in C#
@@ -71,7 +71,7 @@ const Carosuel = () => {
                         </button>
                     </div>
                 </div>
-                <div>
+                <div className='px-4'>
                     <img src={book2} alt="Book 2" />
                     <h3 className='text-center text-lg font-semibold'>
                         The Expert Guide To Machine Learning
@@ -85,7 +85,7 @@ const Carosuel = () => {
                         </button>
                     </div>
                 </div>
-                <div>
+                <div className='px-4'>
                     <img src={book3} alt="Book 3" />
                     <h3 className='text-center text-lg font-semibold'>
                         Crash Course in Python

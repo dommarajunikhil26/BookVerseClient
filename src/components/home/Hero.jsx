@@ -3,7 +3,7 @@ import image2 from '../../assets/Images/PublicImages/image-1.jpg';
 
 const Hero = () => {
     return (
-        <div className="w-screen">
+        <div className="w-screen m-0 overflow-hidden">
             <div className="w-screen flex flex-col md:flex-row pb-4 md:pb-0">
                 <div className="w-full md:w-1/2">
                     <img
