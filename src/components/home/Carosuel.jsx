@@ -8,29 +8,21 @@ import book3 from '../../assets/Images/BooksImages/new-book-3.png';
 
 const Carosuel = () => {
     const responsive = {
-        desktop: {
-            breakpoint: {
-                max: 3000,
-                min: 1024
-            },
-            items: 3,
-            partialVisibilityGutter: 40
+        superLargeDesktop: {
+            breakpoint: { max: 4000, min: 3000 },
+            items: 5
         },
-        mobile: {
-            breakpoint: {
-                max: 464,
-                min: 0
-            },
-            items: 1,
-            partialVisibilityGutter: 30
+        desktop: {
+            breakpoint: { max: 3000, min: 1024 },
+            items: 3
         },
         tablet: {
-            breakpoint: {
-                max: 1024,
-                min: 464
-            },
-            items: 2,
-            partialVisibilityGutter: 30
+            breakpoint: { max: 1024, min: 464 },
+            items: 2
+        },
+        mobile: {
+            breakpoint: { max: 464, min: 0 },
+            items: 1
         }
     };
 
@@ -73,6 +65,11 @@ const Carosuel = () => {
                     <p className='text-center'>
                         Arda Luv
                     </p>
+                    <div className="flex justify-center">
+                        <button className='p-2 bg-blue-500 rounded text-white hover:bg-blue-700'>
+                            Reserve
+                        </button>
+                    </div>
                 </div>
                 <div>
                     <img src={book2} alt="Book 2" />
@@ -82,6 +79,11 @@ const Carosuel = () => {
                     <p className='text-center'>
                         Ahmet Luv
                     </p>
+                    <div className="flex justify-center">
+                        <button className='p-2 bg-blue-500 rounded text-white hover:bg-blue-700'>
+                            Reserve
+                        </button>
+                    </div>
                 </div>
                 <div>
                     <img src={book3} alt="Book 3" />
@@ -91,10 +93,14 @@ const Carosuel = () => {
                     <p className='text-center'>
                         John Luv
                     </p>
+                    <div className="flex justify-center">
+                        <button className='p-2 bg-blue-500 rounded text-white hover:bg-blue-700'>
+                            Reserve
+                        </button>
+                    </div>
                 </div>
-
             </Carousel>
-            <div className='flex justify-center my-2'>
+            <div className='flex justify-center my-4'>
                 <button className='border-[2px] border-grey-950 p-2'>View More</button>
             </div>
         </div>
