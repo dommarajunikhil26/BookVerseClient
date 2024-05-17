@@ -12,7 +12,9 @@ const ExploreBooks = () => {
             <div className="flex flex-col text-white">
                 <h1 className="text-3xl font-bold">Find your next adventure</h1>
                 <p className="text-xl">Where would you like to go next?</p>
-                <button className="p-2 bg-blue-600 w-1/2 mt-2" onClick={handleButtonClick}>Explore top books</button>
+                <div className="flex justify-center">
+                    <button className="p-2 bg-blue-600 w-1/2 mt-2" onClick={handleButtonClick}>Explore top books</button>
+                </div>
             </div>
         </div>
     )
