@@ -17,7 +17,7 @@ const Header = () => {
     }
 
     const handleSearchClick = () => {
-        navigate("/search");
+        navigate("/searchBooks");
     }
 
     const handleSigninClick = () => {
