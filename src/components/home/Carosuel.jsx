@@ -14,7 +14,7 @@ const Carosuel = () => {
     const { books, isLoading, error } = useSelector((state) => state.books);
 
     useEffect(() => {
-        dispath(fetchBooks());
+        dispath(fetchBooks({ page: 0, size: 9 }));
     }, [dispath]);
 
     if (isLoading) {
