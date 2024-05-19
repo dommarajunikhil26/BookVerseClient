@@ -2,11 +2,16 @@
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
-import book1 from '../../assets/Images/BooksImages/new-book-1.png';
-import book2 from '../../assets/Images/BooksImages/new-book-2.png';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+
 import book3 from '../../assets/Images/BooksImages/new-book-3.png';
 
 const Carosuel = () => {
+    const [books, setBooks] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [httpError, SetHttpError] = useState(null);
+
     const responsive = {
         superLargeDesktop: {
             breakpoint: { max: 4000, min: 3000 },
@@ -25,6 +30,38 @@ const Carosuel = () => {
             items: 1
         }
     };
+
+    useEffect(() => {
+        axios.get(`${import.meta.env.VITE_BASE_SERVER_URL}?page=0&size=9`)
+            .then(response => {
+                if (response.data._embedded && response.data._embedded.books) {
+                    setBooks(response.data._embedded.books);
+                    setIsLoading(false);
+                } else {
+                    console.error("Books data is not available in the response");
+                }
+            })
+            .catch(error => {
+                setIsLoading(false);
+                SetHttpError(error);
+            });
+    }, []);
+
+    if (isLoading) {
+        return (
+            <div className='h-[500px] w-full border-2 border-black flex items-center justify-center'>
+                <p className='text-3xl'>Loading ...</p>
+            </div>
+        )
+    }
+
+    if (httpError) {
+        return (
+            <div className='h-[400px] w-[400px] border-2 border-black'>
+                <p>{httpError}</p>
+            </div>
+        )
+    }
 
     return (
         <div className='p-2 md:my-4 flex flex-col justify-center'>
@@ -57,48 +94,27 @@ const Carosuel = () => {
                 slidesToSlide={1}
                 swipeable
             >
-                <div className='px-4'>
-                    <img src={book1} alt="Book 1" />
-                    <h3 className='text-center text-lg font-semibold'>
-                        Advanced Techniques in C#
-                    </h3>
-                    <p className='text-center'>
-                        Arda Luv
-                    </p>
-                    <div className="flex justify-center">
-                        <button className='p-2 bg-blue-500 rounded text-white hover:bg-blue-700'>
-                            Reserve
-                        </button>
+                {books.map(book => (
+                    <div className='px-4' key={book.id}>
+                        {book.img ?
+                            <img src={book.img} alt={book.title} />
+                            :
+                            <img src={book3} alt="Crash Course in Python" />
+                        }
+                        <h3 className='text-center text-lg font-semibold'>
+                            {book.title}
+                        </h3>
+                        <p className='text-center'>
+                            {book.author}
+                        </p>
+                        <div className="flex justify-center">
+                            <button className='p-2 bg-blue-500 rounded text-white hover:bg-blue-700'>
+                                Reserve
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <div className='px-4'>
-                    <img src={book2} alt="Book 2" />
-                    <h3 className='text-center text-lg font-semibold'>
-                        The Expert Guide To Machine Learning
-                    </h3>
-                    <p className='text-center'>
-                        Ahmet Luv
-                    </p>
-                    <div className="flex justify-center">
-                        <button className='p-2 bg-blue-500 rounded text-white hover:bg-blue-700'>
-                            Reserve
-                        </button>
-                    </div>
-                </div>
-                <div className='px-4'>
-                    <img src={book3} alt="Book 3" />
-                    <h3 className='text-center text-lg font-semibold'>
-                        Crash Course in Python
-                    </h3>
-                    <p className='text-center'>
-                        John Luv
-                    </p>
-                    <div className="flex justify-center">
-                        <button className='p-2 bg-blue-500 rounded text-white hover:bg-blue-700'>
-                            Reserve
-                        </button>
-                    </div>
-                </div>
+                ))}
+
             </Carousel>
             <div className='flex justify-center my-4'>
                 <button className='border-[2px] border-grey-950 p-2'>View More</button>

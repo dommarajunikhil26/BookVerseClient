@@ -3,7 +3,7 @@ import image1 from '../../assets/Images/PublicImages/image-3.jpg';
 
 const LibararyServices = () => {
     return (
-        <div className=' flex justify-center p-4'>
+        <div className=' flex justify-center p-4 my-4'>
             <div className="flex flex-col md:flex-row w-[90%] border-2 drop-shadow-2xl p-2">
                 <div className="w-full md:w-2/3 flex flex-col my-auto pl-4">
                     <h1 className='text-xl md:text-2xl font-bold'>Can't find what you are looking for?</h1>

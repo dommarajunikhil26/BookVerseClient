@@ -3,13 +3,13 @@ import image2 from '../../assets/Images/PublicImages/image-1.jpg';
 
 const Hero = () => {
     return (
-        <div className="w-screen m-0 overflow-hidden">
+        <div className="w-screen my-3 md:my-6 overflow-hidden">
             <div className="w-screen flex flex-col md:flex-row pb-4 md:pb-0">
                 <div className="w-full md:w-1/2">
                     <img
                         src={image1}
                         alt="sky image"
-                        className="w-full h-[250px] md:h-[260px] lg::h-[220px] object-cover object-top"
+                        className="w-full h-[250px] object-cover object-top"
                     />
                 </div>
                 <div className="w-full md:w-1/2 flex items-center">
@@ -44,7 +44,7 @@ const Hero = () => {
                     <img
                         src={image2}
                         alt="plant image"
-                        className="w-full h-[250px] md:h-[260px] lg:h-[220px] object-cover object-top md:object-left-top  scale-150"
+                        className="w-full h-[250px] object-cover object-top md:object-left-top  scale-150"
                     />
                 </div>
             </div>
