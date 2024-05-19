@@ -1,22 +1,17 @@
 import { useNavigate } from 'react-router-dom';
 import Form from '../utility/Form';
-import { useDispatch } from 'react-redux';
-import { registerUser } from '../authentication/authSlice';
+
 
 const Register = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+
 
     const field1Validate = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? "" : "Enter a valid email address";
     const field2Validate = (value) => value.length >= 10 ? "" : "Password must be at least 10 characters";
 
-    const handleSubmit = ({ field1: email, field2: password }) => {
-        dispatch(registerUser({ email, password })).then(() => {
-            alert("Registered successfully");
-            navigate("/signin");
-
-        })
-
+    const handleSubmit = () => {
+        alert("Registered successfully");
+        navigate("/signin");
     }
 
     return (

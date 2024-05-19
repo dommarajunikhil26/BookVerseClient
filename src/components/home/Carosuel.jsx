@@ -2,50 +2,20 @@
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useEffect } from 'react';
 
 import book3 from '../../assets/Images/BooksImages/new-book-3.png';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchBooks } from '../redux/bookSlice';
+import { responsive } from '../utility/Tools';
 
 const Carosuel = () => {
-    const [books, setBooks] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [httpError, SetHttpError] = useState(null);
-
-    const responsive = {
-        superLargeDesktop: {
-            breakpoint: { max: 4000, min: 3000 },
-            items: 5
-        },
-        desktop: {
-            breakpoint: { max: 3000, min: 1024 },
-            items: 3
-        },
-        tablet: {
-            breakpoint: { max: 1024, min: 464 },
-            items: 2
-        },
-        mobile: {
-            breakpoint: { max: 464, min: 0 },
-            items: 1
-        }
-    };
+    const dispath = useDispatch();
+    const { books, isLoading, error } = useSelector((state) => state.books);
 
     useEffect(() => {
-        axios.get(`${import.meta.env.VITE_BASE_SERVER_URL}?page=0&size=9`)
-            .then(response => {
-                if (response.data._embedded && response.data._embedded.books) {
-                    setBooks(response.data._embedded.books);
-                    setIsLoading(false);
-                } else {
-                    console.error("Books data is not available in the response");
-                }
-            })
-            .catch(error => {
-                setIsLoading(false);
-                SetHttpError(error);
-            });
-    }, []);
+        dispath(fetchBooks());
+    }, [dispath]);
 
     if (isLoading) {
         return (
@@ -55,10 +25,10 @@ const Carosuel = () => {
         )
     }
 
-    if (httpError) {
+    if (error) {
         return (
             <div className='h-[400px] w-[400px] border-2 border-black'>
-                <p>{httpError}</p>
+                <p>{error}</p>
             </div>
         )
     }
