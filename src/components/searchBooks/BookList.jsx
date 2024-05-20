@@ -1,10 +1,17 @@
 /* eslint-disable react/prop-types */
 
+import { useNavigate } from 'react-router-dom';
 import NoBooks from './NoBooks';
 
 const BookList = ({ books, totalItems }) => {
+    const navigate = useNavigate();
+
     if (totalItems === 0) {
         return <NoBooks />;
+    }
+
+    const handleButtonClick = (book) => {
+        navigate("/checkout", { state: { book } });
     }
 
     return books.map((book) => (
@@ -19,7 +26,7 @@ const BookList = ({ books, totalItems }) => {
                     <p>{book.description}</p>
                 </div>
                 <div className='md:w-1/4 flex items-center justify-center'>
-                    <button className='p-2 bg-blue-500 rounded text-white hover:bg-blue-700'>
+                    <button className='p-2 bg-blue-500 rounded text-white hover:bg-blue-700' onClick={() => handleButtonClick(book)}>
                         View Details
                     </button>
                 </div>
