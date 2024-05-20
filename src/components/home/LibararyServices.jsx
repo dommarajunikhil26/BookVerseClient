@@ -1,7 +1,14 @@
 /* eslint-disable react/no-unescaped-entities */
+import { useNavigate } from 'react-router-dom';
 import image1 from '../../assets/Images/PublicImages/image-3.jpg';
 
 const LibararyServices = () => {
+    const navigate = useNavigate();
+
+    const handleButtonClick = () => {
+        navigate("/signin");
+    };
+
     return (
         <div className=' flex justify-center p-4 my-4'>
             <div className="flex flex-col md:flex-row w-[90%] border-2 drop-shadow-2xl p-2">
@@ -9,7 +16,7 @@ const LibararyServices = () => {
                     <h1 className='text-xl md:text-2xl font-bold'>Can't find what you are looking for?</h1>
                     <p>If you cannot find what you are looking for, send our library admin's a personal message!</p>
                     <div className='mt-2 mb-4 mb:mb-0'>
-                        <button className='p-2 bg-blue-500 rounded text-white hover:bg-blue-700'>
+                        <button className='p-2 bg-blue-500 rounded text-white hover:bg-blue-700' onClick={handleButtonClick}>
                             Sign up
                         </button>
                     </div>

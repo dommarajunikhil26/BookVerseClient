@@ -8,9 +8,12 @@ import book3 from '../../assets/Images/BooksImages/new-book-3.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBooks } from '../redux/bookSlice';
 import { responsive } from '../utility/Tools';
+import { useNavigate } from 'react-router-dom';
 
 const Carosuel = () => {
     const dispath = useDispatch();
+    const navigate = useNavigate();
+
     const { books, isLoading, error } = useSelector((state) => state.books);
 
     useEffect(() => {
@@ -33,6 +36,9 @@ const Carosuel = () => {
         )
     }
 
+    const handleViewMoreButton = () => {
+        navigate("/searchBooks");
+    }
     return (
         <div className='p-2 md:my-4 flex flex-col justify-center'>
             <p className='text-center p-4 md:p-6 '>Find your next "I stayed up too late reading" book</p>
@@ -87,7 +93,7 @@ const Carosuel = () => {
 
             </Carousel>
             <div className='flex justify-center my-4'>
-                <button className='border-[2px] border-grey-950 p-2'>View More</button>
+                <button className='border-[2px] border-grey-950 p-2' onClick={handleViewMoreButton}>View More</button>
             </div>
         </div>
     )

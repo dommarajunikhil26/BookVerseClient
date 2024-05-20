@@ -6,6 +6,7 @@ import Signin from "./components/signin_register/Signin"
 import Register from "./components/signin_register/Register"
 import ChangePassword from "./components/signin_register/ChangePassword"
 import SearchBooks from "./components/searchBooks/SearchBooks"
+import Checkout from "./components/checkout/Checkout"
 
 
 const App = () => {
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/changePassword" element={<ChangePassword />} />
           <Route path="/searchBooks" element={<SearchBooks />} />
+          <Route path="/checkout" element={<Checkout />} />
         </Routes>
       </main>
       <Footer />

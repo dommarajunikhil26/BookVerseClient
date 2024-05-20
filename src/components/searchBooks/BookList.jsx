@@ -13,7 +13,7 @@ const BookList = ({ books, totalItems }) => {
                 <div className="w-full flex justify-center md:justify-normal md:w-1/4">
                     <img src={book.img} alt="Book image" className="h-[300px]" />
                 </div>
-                <div className="w-full md:w-2/4 flex flex-col justify-center md:justify-normal my-auto pl-4">
+                <div className="w-full mt-2 mb-2 md:mt-0 md:mb-0 md:w-2/4 flex flex-col justify-center md:justify-normal my-auto pl-4">
                     <h1 className='text-xl md:text-2xl font-bold'>{book.author}</h1>
                     <h1 className='text-xl md:text-2xl font-bold'>{book.title}</h1>
                     <p>{book.description}</p>

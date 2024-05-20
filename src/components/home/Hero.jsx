@@ -1,7 +1,13 @@
 import image1 from '../../assets/Images/PublicImages/image-4.jpg';
 import image2 from '../../assets/Images/PublicImages/image-1.jpg';
+import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
+    const navigate = useNavigate();
+
+    const handleButtonClick = () => {
+        navigate("/signin")
+    };
     return (
         <div className="w-screen my-3 md:my-6 overflow-hidden">
             <div className="w-screen flex flex-col md:flex-row pb-4 md:pb-0">
@@ -21,7 +27,7 @@ const Hero = () => {
                             for you!
                         </p>
                         <div className='mt-2'>
-                            <button className='p-2 bg-blue-500 rounded text-white hover:bg-blue-700'>
+                            <button className='p-2 bg-blue-500 rounded text-white hover:bg-blue-700' onClick={handleButtonClick}>
                                 Sign up
                             </button>
                         </div>
