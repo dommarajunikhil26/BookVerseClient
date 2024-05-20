@@ -20,7 +20,7 @@ export const fetchBooks = createAsyncThunk(
             if (response.data._embedded && response.data._embedded.books) {
                 return {
                     books: response.data._embedded.books,
-                    totalItems: response.data.page.totalElements // Extract total items count
+                    totalItems: response.data.page.totalElements
                 };
             } else {
                 throw new Error("Books data is not available in the response");
@@ -35,8 +35,12 @@ export const fetchBooksByCategory = createAsyncThunk(
     'books/fetchBooksByCategory',
     async ({ page, size, category } = {}, { rejectWithValue }) => {
         try {
-            let url = `${import.meta.env.VITE_BASE_SERVER_URL}?category=${category}`;
-            if (page !== undefined && size !== undefined) {
+
+            let url = `${import.meta.env.VITE_BASE_SERVER_URL}/search/findByCategory?category=${category}`;
+            if (page && size !== undefined) {
+                url += `&page=${page}`;
+            }
+            if (page && size) {
                 url += `&page=${page}&size=${size}`;
             }
             const response = await axios.get(url);
