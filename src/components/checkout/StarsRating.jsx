@@ -1,33 +1,20 @@
 /* eslint-disable react/prop-types */
-import StarRateIcon from '@mui/icons-material/StarRate';
-import { IconButton } from '@mui/material';
-import { useState } from 'react';
+import StarIcon from '@mui/icons-material/Star';
+import StarHalfIcon from '@mui/icons-material/StarHalf';
+import { yellow } from '@mui/material/colors';
 
-const StarRating = ({ rating, setRating }) => {
-    const [hover, setHover] = useState(null);
+const StarsRating = ({ reviewRating }) => {
+    const fullStars = Math.floor(reviewRating);
+    const halfStars = reviewRating % 1 !== 0 ? 1 : 0;
 
     return (
-        <div>
-            {[...Array(5)].map((_, index) => {
-                const ratingValue = index + 1;
-                return (
-                    <IconButton
-                        key={index}
-                        onClick={() => setRating(ratingValue)}
-                        onMouseEnter={() => setHover(ratingValue)}
-                        onMouseLeave={() => setHover(null)}
-                    >
-                        <StarRateIcon
-                            style={{
-                                color: ratingValue <= (hover || rating) ? '#ffc107' : '#e4e5e9',
-                                fontSize: '2rem',
-                            }}
-                        />
-                    </IconButton>
-                );
-            })}
+        <div className="flex">
+            {[...Array(fullStars)].map((_, index) => (
+                <StarIcon key={index} sx={{ color: yellow[700] }} />
+            ))}
+            {halfStars > 0 && <StarHalfIcon sx={{ color: yellow[700] }} />}
         </div>
     );
-};
+}
 
-export default StarRating;
+export default StarsRating;

@@ -1,15 +1,14 @@
-import { useLocation } from 'react-router-dom';
+/* eslint-disable react/prop-types */
 import StarRating from './StarsRating';
-import { useState } from 'react';
 
-const BookDescription = () => {
-    const [rating, setRating] = useState(0);
-    const location = useLocation();
-    const { book } = location.state || {};
+const BookDescription = ({ reviews, book }) => {
 
-    if (!book) {
-        return <p>No book details available</p>;
-    }
+
+    // Filter reviews for the current book
+    const bookReviews = reviews.filter(review => review.bookId === book.id);
+
+    // Calculate average rating
+    const averageRating = bookReviews.reduce((sum, review) => sum + review.rating, 0) / bookReviews.length || 0;
 
     return (
         <div className="w-full md:w-1/2 flex flex-col md:flex-row md:justify-around mt-6 md:mt-10">
@@ -20,7 +19,8 @@ const BookDescription = () => {
                 <h1 className='text-lg md:text-2xl font-bold'>{book.title}</h1>
                 <h2 className='text-md md:text-xl font-semibold text-blue-400'>{book.author}</h2>
                 <p className='mt-4'>{book.description}</p>
-                <StarRating rating={rating} setRating={setRating} />
+                <StarRating reviewRating={averageRating} />
+                <p className='mt-2 font-mono'>{bookReviews.length} reviews</p>
             </div>
         </div>
     );

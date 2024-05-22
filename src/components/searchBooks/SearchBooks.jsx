@@ -51,7 +51,7 @@ const SearchBooks = () => {
         e.preventDefault();
         const title = e.target.elements.searchInput.value;
         dispatch(fetchBooksBySearch({ page, size, title }));
-    }
+    };
 
     if (isLoading) {
         return (
