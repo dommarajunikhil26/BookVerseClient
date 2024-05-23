@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updatePassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updatePassword, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase/Firebase";
 
 const initialState = {
@@ -9,28 +9,21 @@ const initialState = {
     error: null,
 };
 
-export const initializeAuth = createAsyncThunk(
-    'auth/initializeAuth',
-    async (_, { dispatch }) => {
-        return new Promise((resolve) => {
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    dispatch(setAuthState({ user }));
-                } else {
-                    dispatch(clearAuthState());
-                }
-                resolve();
-            });
-        });
-    }
-);
+const extractUserInfo = (user) => ({
+    uid: user.uid,
+    email: user.email,
+    displayName: user.displayName,
+    photoURL: user.photoURL,
+});
 
+// Thunks
 export const loginUser = createAsyncThunk(
     'auth/loginUser',
     async ({ email, password }, { rejectWithValue }) => {
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            return userCredential.user;
+            const userInfo = extractUserInfo(userCredential.user);
+            return userInfo;
         } catch (error) {
             return rejectWithValue(error.message);
         }
@@ -54,7 +47,8 @@ export const registerUser = createAsyncThunk(
     async ({ email, password }, { rejectWithValue }) => {
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            return userCredential.user;
+            const userInfo = extractUserInfo(userCredential.user);
+            return userInfo;
         } catch (error) {
             return rejectWithValue(error.message);
         }
@@ -78,15 +72,34 @@ export const changePassword = createAsyncThunk(
     }
 );
 
+export const checkAuthState = createAsyncThunk(
+    'auth/checkAuthState',
+    async (_, { dispatch }) => {
+        return new Promise((resolve, reject) => {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    const userInfo = extractUserInfo(user);
+                    dispatch(setUser(userInfo));
+                    resolve(userInfo);
+                } else {
+                    dispatch(clearUser());
+                    resolve(null);
+                }
+            });
+        });
+    }
+);
+
+// Slice
 const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        setAuthState: (state, action) => {
+        setUser(state, action) {
             state.isAuthenticated = true;
-            state.user = action.payload.user;
+            state.user = action.payload;
         },
-        clearAuthState: (state) => {
+        clearUser(state) {
             state.isAuthenticated = false;
             state.user = null;
         },
@@ -146,10 +159,17 @@ const authSlice = createSlice({
             .addCase(changePassword.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
+            })
+            .addCase(checkAuthState.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(checkAuthState.fulfilled, (state) => {
+                state.loading = false;
+                state.error = null;
             });
     },
 });
 
-export const { setAuthState, clearAuthState } = authSlice.actions;
-
+export const { setUser, clearUser } = authSlice.actions;
 export default authSlice.reducer;

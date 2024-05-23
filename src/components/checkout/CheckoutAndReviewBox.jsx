@@ -1,7 +1,8 @@
+/* eslint-disable react/prop-types */
 import { useNavigate } from "react-router-dom"
 
 
-const CheckoutAndReviewBox = () => {
+const CheckoutAndReviewBox = ({ isAuthenticated }) => {
     const navigate = useNavigate();
 
     const handleButtonClick = () => {
@@ -20,7 +21,7 @@ const CheckoutAndReviewBox = () => {
                     <p className="text-md md:text-xl">10 available</p>
                 </div>
                 <button className='p-2 my-4 bg-green-700 rounded text-white hover:bg-green-600 w-1/3' onClick={handleButtonClick}>
-                    Sign in
+                    {isAuthenticated ? "Checkout" : "Sign in"}
                 </button>
             </div>
             <div className="w-[90%]">

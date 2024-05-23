@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import booksReducer from './bookSlice';
 import reviewsReducer from './reviewSlice';
-import authReducer, { initializeAuth } from './authSlice';
+import authReducer, { checkAuthState } from './authSlice';
 
 const Store = configureStore({
     reducer: {
@@ -11,6 +11,6 @@ const Store = configureStore({
     },
 });
 
-Store.dispatch(initializeAuth());
+Store.dispatch(checkAuthState());
 
 export default Store;

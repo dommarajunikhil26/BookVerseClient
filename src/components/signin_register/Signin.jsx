@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Form from "../utility/Form";
 import { loginUser } from '../redux/authSlice';
+import { auth } from "../firebase/Firebase";
 
 const Signin = () => {
     const dispatch = useDispatch();
@@ -15,8 +16,16 @@ const Signin = () => {
         }
     }, [isAuthenticated, navigate]);
 
-    const handleSubmit = ({ field1: email, field2: password }) => {
-        dispatch(loginUser({ email, password }));
+    const handleSubmit = async ({ field1: email, field2: password }) => {
+        const response = await dispatch(loginUser({ email, password }));
+        if (response.meta.requestStatus === 'fulfilled') {
+            const user = auth.currentUser;
+            if (user) {
+                const idToken = await user.getIdToken();
+                localStorage.setItem('idToken', idToken);  // Store the ID token in local storage
+                console.log(idToken);
+            }
+        }
     };
 
     return (

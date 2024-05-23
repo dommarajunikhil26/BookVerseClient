@@ -9,8 +9,10 @@ import { useLocation } from "react-router-dom";
 const Checkout = () => {
     const dispatch = useDispatch();
     const { reviews, isLoading, error } = useSelector((state) => state.reviews);
+    const { isAuthenticated } = useSelector((state) => state.auth);
     const location = useLocation();
     const { book } = location.state || {};
+
 
     useEffect(() => {
         dispatch(fetchReviews());
@@ -32,7 +34,7 @@ const Checkout = () => {
         <div className="flex flex-col">
             <div className="flex flex-col md:flex-row ml-2 mr-2 md:ml-6 md:mr-6 md:justify-evenly border-b-[1px]">
                 <BookDescription reviews={reviews} book={book} />
-                <CheckoutAndReviewBox />
+                <CheckoutAndReviewBox isAuthenticated={isAuthenticated} />
             </div>
             <LatestReviews reviews={reviews} bookId={book.id} />
         </div>
