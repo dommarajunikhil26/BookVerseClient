@@ -2,10 +2,8 @@
 import StarRating from './StarsRating';
 
 const BookDescription = ({ reviews, book }) => {
-
-
-    // Filter reviews for the current book
-    const bookReviews = reviews.filter(review => review.bookId === book.id);
+    // Ensure reviews is an array
+    const bookReviews = Array.isArray(reviews) ? reviews.filter(review => review.bookId === book.id) : [];
 
     // Calculate average rating
     const averageRating = bookReviews.reduce((sum, review) => sum + review.rating, 0) / bookReviews.length || 0;

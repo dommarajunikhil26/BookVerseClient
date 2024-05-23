@@ -11,6 +11,7 @@ import ChangePassword from "./components/signin_register/ChangePassword";
 import SearchBooks from "./components/searchBooks/SearchBooks";
 import Checkout from "./components/checkout/Checkout";
 import Reviews from "./components/checkout/Reviews";
+import ProtectedRoute from './components/utility/ProtectedRoute';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -29,8 +30,16 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/changePassword" element={<ChangePassword />} />
           <Route path="/searchBooks" element={<SearchBooks />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/reviews" element={<Reviews />} />
+          <Route path="/checkout" element={
+            <ProtectedRoute>
+              <Checkout />
+            </ProtectedRoute>
+          } />
+          <Route path="/reviews" element={
+            <ProtectedRoute>
+              <Reviews />
+            </ProtectedRoute>
+          } />
         </Routes>
       </main>
       <Footer />

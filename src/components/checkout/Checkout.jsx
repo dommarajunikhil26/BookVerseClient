@@ -13,10 +13,10 @@ const Checkout = () => {
     const location = useLocation();
     const { book } = location.state || {};
 
-
     useEffect(() => {
         dispatch(fetchReviews());
     }, [dispatch]);
+
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -34,7 +34,7 @@ const Checkout = () => {
         <div className="flex flex-col">
             <div className="flex flex-col md:flex-row ml-2 mr-2 md:ml-6 md:mr-6 md:justify-evenly border-b-[1px]">
                 <BookDescription reviews={reviews} book={book} />
-                <CheckoutAndReviewBox isAuthenticated={isAuthenticated} />
+                <CheckoutAndReviewBox isAuthenticated={isAuthenticated} book={book} />
             </div>
             <LatestReviews reviews={reviews} bookId={book.id} />
         </div>

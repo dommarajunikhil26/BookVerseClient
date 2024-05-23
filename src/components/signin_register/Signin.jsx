@@ -22,7 +22,7 @@ const Signin = () => {
             const user = auth.currentUser;
             if (user) {
                 const idToken = await user.getIdToken();
-                localStorage.setItem('idToken', idToken);  // Store the ID token in local storage
+                localStorage.setItem('idToken', idToken);
                 console.log(idToken);
             }
         }

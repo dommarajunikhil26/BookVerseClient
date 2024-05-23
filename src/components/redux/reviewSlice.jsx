@@ -1,37 +1,26 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-
-const initialState = {
-    reviews: [],
-    isLoading: false,
-    error: null,
-    totalItems: 0
-};
+// src/components/redux/reviewSlice.js
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axiosInstance from '../utility/AxiosInstance';
 
 export const fetchReviews = createAsyncThunk(
     'reviews/fetchReviews',
     async (_, { rejectWithValue }) => {
         try {
-            const url = `${import.meta.env.VITE_SERVER_REVIEW_URL}`;
-            const response = await axios.get(url);
-            if (response.data._embedded && response.data._embedded.reviews) {
-                return {
-                    reviews: response.data._embedded.reviews,
-                    totalItems: response.data.page.totalElements
-                };
-            } else {
-                throw new Error("Reviews data is not available in the response");
-            }
+            const response = await axiosInstance.get('/reviews');
+            return response.data;
         } catch (error) {
             return rejectWithValue(error.message);
         }
     }
-)
+);
 
 const reviewSlice = createSlice({
     name: 'reviews',
-    initialState,
-    reducers: {},
+    initialState: {
+        reviews: [], // Make sure this is an empty array
+        isLoading: false,
+        error: null,
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchReviews.pending, (state) => {
@@ -39,16 +28,14 @@ const reviewSlice = createSlice({
                 state.error = null;
             })
             .addCase(fetchReviews.fulfilled, (state, action) => {
-                state.reviews = action.payload.reviews;
-                state.totalItems = action.payload.totalItems;
+                state.reviews = action.payload;
                 state.isLoading = false;
-                state.error = null;
             })
             .addCase(fetchReviews.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload;
             });
-    }
+    },
 });
 
 export default reviewSlice.reducer;
