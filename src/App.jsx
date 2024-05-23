@@ -1,4 +1,7 @@
 import { Route, Routes } from "react-router-dom"
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { initializeAuth } from './components/redux/authSlice';
 import Footer from "./components/header_footer/Footer"
 import Header from "./components/header_footer/Header"
 import Home from "./components/home/Home"
@@ -11,6 +14,11 @@ import Reviews from "./components/checkout/Reviews"
 
 
 const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(initializeAuth());
+  }, [dispatch]);
   return (
     <div className="flex flex-col min-h-screen">
       <Header />

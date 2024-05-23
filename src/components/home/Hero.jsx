@@ -1,12 +1,19 @@
 import image1 from '../../assets/Images/PublicImages/image-4.jpg';
 import image2 from '../../assets/Images/PublicImages/image-1.jpg';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Hero = () => {
     const navigate = useNavigate();
 
+    const { isAuthenticated } = useSelector((state) => state.auth);
+
     const handleButtonClick = () => {
-        navigate("/signin")
+        if (isAuthenticated) {
+            navigate("/searchBooks");
+        } else {
+            navigate("/signin");
+        }
     };
     return (
         <div className="w-screen my-3 md:my-6 overflow-hidden">
@@ -28,7 +35,7 @@ const Hero = () => {
                         </p>
                         <div className='mt-2'>
                             <button className='p-2 bg-blue-500 rounded text-white hover:bg-blue-700' onClick={handleButtonClick}>
-                                Sign up
+                                {isAuthenticated ? "Explore Books" : "Sign up"}
                             </button>
                         </div>
                     </div>

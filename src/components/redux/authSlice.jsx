@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updatePassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updatePassword } from "firebase/auth";
 import { auth } from "../firebase/Firebase";
 
 const initialState = {
@@ -9,6 +9,22 @@ const initialState = {
     error: null,
 };
 
+export const initializeAuth = createAsyncThunk(
+    'auth/initializeAuth',
+    async (_, { dispatch }) => {
+        return new Promise((resolve) => {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    dispatch(setAuthState({ user }));
+                } else {
+                    dispatch(clearAuthState());
+                }
+                resolve();
+            });
+        });
+    }
+);
+
 export const loginUser = createAsyncThunk(
     'auth/loginUser',
     async ({ email, password }, { rejectWithValue }) => {
@@ -16,7 +32,6 @@ export const loginUser = createAsyncThunk(
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             return userCredential.user;
         } catch (error) {
-            console.error('Login error', error);
             return rejectWithValue(error.message);
         }
     }
@@ -29,7 +44,6 @@ export const logoutUser = createAsyncThunk(
             await signOut(auth);
             return true;
         } catch (error) {
-            console.error('Logout error', error);
             return rejectWithValue(error.message);
         }
     }
@@ -40,10 +54,8 @@ export const registerUser = createAsyncThunk(
     async ({ email, password }, { rejectWithValue }) => {
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            console.log('Registration successful', userCredential.user);
             return userCredential.user;
         } catch (error) {
-            console.error('Registration error', error);
             return rejectWithValue(error.message);
         }
     }
@@ -56,13 +68,11 @@ export const changePassword = createAsyncThunk(
             const user = auth.currentUser;
             if (user) {
                 await updatePassword(user, newPassword);
-                console.log('Password change successful');
                 return true;
             } else {
                 throw new Error("User is not authenticated");
             }
         } catch (error) {
-            console.error('Password change error', error);
             return rejectWithValue(error.message);
         }
     }
@@ -71,7 +81,16 @@ export const changePassword = createAsyncThunk(
 const authSlice = createSlice({
     name: 'auth',
     initialState,
-    reducers: {},
+    reducers: {
+        setAuthState: (state, action) => {
+            state.isAuthenticated = true;
+            state.user = action.payload.user;
+        },
+        clearAuthState: (state) => {
+            state.isAuthenticated = false;
+            state.user = null;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(loginUser.pending, (state) => {
@@ -130,5 +149,7 @@ const authSlice = createSlice({
             });
     },
 });
+
+export const { setAuthState, clearAuthState } = authSlice.actions;
 
 export default authSlice.reducer;
