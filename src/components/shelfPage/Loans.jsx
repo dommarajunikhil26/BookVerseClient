@@ -24,6 +24,15 @@ const Loans = () => {
         setLoansData(loansData.filter(loan => loan.book.id !== bookId));
     };
 
+    const handleBookRenew = (bookId, newDaysLeft) => {
+        setLoansData(loansData.map(loan => {
+            if (loan.book.id === bookId) {
+                return { ...loan, daysLeft: newDaysLeft };
+            }
+            return loan;
+        }));
+    };
+
     return (
         <div className="flex justify-center">
             <div className="w-[90%]">
@@ -42,7 +51,7 @@ const Loans = () => {
                                     <img src={loan.book.img} alt={loan.book.title} className="h-[250px]" />
                                 </div>
                                 <div>
-                                    <LoanOptions book={loan.book} daysLeft={loan.daysLeft} onBookReturn={handleBookReturn} />
+                                    <LoanOptions book={loan.book} daysLeft={loan.daysLeft} onBookReturn={handleBookReturn} onBookRenew={handleBookRenew} />
                                 </div>
                             </div>
                         ))

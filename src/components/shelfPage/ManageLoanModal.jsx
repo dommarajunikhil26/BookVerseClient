@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import axiosInstance from "../utility/AxiosInstance";
 
-const ManageLoanModal = ({ book, daysLeft, onClose, onBookReturn }) => {
+const ManageLoanModal = ({ book, daysLeft, onClose, onBookReturn, onBookRenew }) => {
     const handleReturnBook = async () => {
         try {
             const response = await axiosInstance.put(`/books/secure/return`, null, {
@@ -14,6 +14,19 @@ const ManageLoanModal = ({ book, daysLeft, onClose, onBookReturn }) => {
             console.error('Error while putting return book data', error);
         }
     };
+
+    const handleRenewBook = async () => {
+        try {
+            const response = await axiosInstance.put(`/books/secure/renew/loan`, null, {
+                params: { bookId: book.id }
+            });
+            console.log('Book renewed successfully', response.data);
+            onBookRenew(book.id, daysLeft + 7); // Assuming renewal adds 7 days
+            onClose();
+        } catch (error) {
+            console.error("Error while renewing the book", error);
+        }
+    }
 
     return (
         <div className="fixed inset-0 z-10 flex items-center justify-center bg-gray-500 bg-opacity-90">
@@ -37,7 +50,10 @@ const ManageLoanModal = ({ book, daysLeft, onClose, onBookReturn }) => {
                     >
                         Return Book
                     </button>
-                    <button className="border border-gray-300 rounded-md p-2 text-md hover:bg-gray-200">
+                    <button
+                        className="border border-gray-300 rounded-md p-2 text-md hover:bg-gray-200"
+                        onClick={handleRenewBook}
+                    >
                         Renew loan for 7 days
                     </button>
                 </div>
