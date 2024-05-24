@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-
 import { useNavigate } from 'react-router-dom';
 import NoBooks from './NoBooks';
 
@@ -11,7 +10,7 @@ const BookList = ({ books, totalItems }) => {
     }
 
     const handleButtonClick = (book) => {
-        navigate("/checkout", { state: { book } });
+        navigate(`/checkout/${book.id}`, { state: { book } });
     }
 
     return books.map((book) => (

@@ -1,6 +1,20 @@
 /* eslint-disable react/prop-types */
+import axiosInstance from "../utility/AxiosInstance";
 
-const ManageLoanModal = ({ book, daysLeft, onClose }) => {
+const ManageLoanModal = ({ book, daysLeft, onClose, onBookReturn }) => {
+    const handleReturnBook = async () => {
+        try {
+            const response = await axiosInstance.put(`/books/secure/return`, null, {
+                params: { bookId: book.id }
+            });
+            console.log('Book returned successfully', response.data);
+            onBookReturn(book.id);
+            onClose();
+        } catch (error) {
+            console.error('Error while putting return book data', error);
+        }
+    };
+
     return (
         <div className="fixed inset-0 z-10 flex items-center justify-center bg-gray-500 bg-opacity-90">
             <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
@@ -15,9 +29,12 @@ const ManageLoanModal = ({ book, daysLeft, onClose }) => {
                         <p className="text-sm">{book.title}</p>
                     </div>
                 </div>
-                <p className="text-sm mb-4">Due in {daysLeft} days</p>
+                <p className="text-sm mb-4 text-gray-600">Due in {daysLeft} days</p>
                 <div className="flex flex-col space-y-2 mb-4">
-                    <button className="border border-gray-300 rounded-md p-2 text-md hover:bg-gray-200">
+                    <button
+                        className="border border-gray-300 rounded-md p-2 text-md hover:bg-gray-200"
+                        onClick={handleReturnBook}
+                    >
                         Return Book
                     </button>
                     <button className="border border-gray-300 rounded-md p-2 text-md hover:bg-gray-200">
@@ -29,7 +46,7 @@ const ManageLoanModal = ({ book, daysLeft, onClose }) => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default ManageLoanModal;

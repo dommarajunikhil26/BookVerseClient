@@ -20,20 +20,33 @@ const Loans = () => {
         currentBookLoans();
     }, []);
 
+    const handleBookReturn = (bookId) => {
+        setLoansData(loansData.filter(loan => loan.book.id !== bookId));
+    };
+
     return (
         <div className="flex justify-center">
             <div className="w-[90%]">
                 <h1 className="font-bold text-2xl my-4">Current Loans:</h1>
-                {loansData.map((loan) => (
-                    <div key={loan.book.id} className="border shadow-lg rounded-lg my-4 p-4 flex flex-col md:flex-row justify-evenly items-center">
-                        <div className="pb-4 md:pb-0">
-                            <img src={loan.book.img} alt={loan.book.title} className="h-[250px]" />
-                        </div>
+                {loansData.length === 0 ?
+                    (
                         <div>
-                            <LoanOptions book={loan.book} daysLeft={loan.daysLeft} />
+                            <p className="font-bold">No Loans exist</p>
                         </div>
-                    </div>
-                ))}
+                    )
+                    :
+                    (
+                        loansData.map((loan) => (
+                            <div key={loan.book.id} className="border shadow-lg rounded-lg my-4 p-4 flex flex-col md:flex-row justify-evenly items-center">
+                                <div className="pb-4 md:pb-0">
+                                    <img src={loan.book.img} alt={loan.book.title} className="h-[250px]" />
+                                </div>
+                                <div>
+                                    <LoanOptions book={loan.book} daysLeft={loan.daysLeft} onBookReturn={handleBookReturn} />
+                                </div>
+                            </div>
+                        ))
+                    )}
             </div>
         </div>
     );

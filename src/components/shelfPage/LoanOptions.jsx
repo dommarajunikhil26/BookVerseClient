@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ManageLoanModal from "./ManageLoanModal";
 
-const LoanOptions = ({ book, daysLeft }) => {
+const LoanOptions = ({ book, daysLeft, onBookReturn }) => {
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
 
@@ -48,7 +48,7 @@ const LoanOptions = ({ book, daysLeft }) => {
             </button>
 
             {showModal && (
-                <ManageLoanModal book={book} daysLeft={daysLeft} onClose={() => setShowModal(false)} />
+                <ManageLoanModal book={book} daysLeft={daysLeft} onClose={() => setShowModal(false)} onBookReturn={onBookReturn} />
             )}
         </div>
     );
