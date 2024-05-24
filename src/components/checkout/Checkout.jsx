@@ -6,6 +6,7 @@ import LatestReviews from "./LatestReviews";
 import { useEffect, useState } from "react";
 import { fetchReviews } from "../redux/reviewSlice";
 import { useLocation } from "react-router-dom";
+import { Loading } from "../utility/Tools";
 
 const Checkout = () => {
     const dispatch = useDispatch();
@@ -28,7 +29,7 @@ const Checkout = () => {
     };
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <Loading />;
     }
 
     if (error) {

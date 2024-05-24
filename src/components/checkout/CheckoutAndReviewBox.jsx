@@ -31,11 +31,9 @@ const CheckoutAndReviewBox = ({ isAuthenticated, book, onNewReview }) => {
             };
             fetchCurrentLoans();
 
-            // Check if review already exists
             const checkExistingReview = async () => {
                 const existingReview = await hasUserReviewed(bookId);
                 setIsReviewPosted(existingReview);
-                console.log("Existing review status:", existingReview); // Debug log
             };
             checkExistingReview();
         }
@@ -131,10 +129,10 @@ const CheckoutAndReviewBox = ({ isAuthenticated, book, onNewReview }) => {
                 bookId: bookId,
                 reviewDescription: reviewText,
             };
-            setStarValue(null); // Reset the star value after submission
-            setReviewText(''); // Reset the review text
-            onNewReview(newReview); // Update the parent component with the new review
-            setIsReviewPosted(true); // Set isReviewPosted to true after posting the review
+            setStarValue(null);
+            setReviewText('');
+            onNewReview(newReview);
+            setIsReviewPosted(true);
         } catch (error) {
             console.error('Error submitting review', error);
         }
