@@ -13,6 +13,7 @@ import Checkout from "./components/checkout/Checkout";
 import Reviews from "./components/checkout/Reviews";
 import ProtectedRoute from './components/utility/ProtectedRoute';
 import { Loading } from "./components/utility/Tools";
+import Shelf from "./components/shelfPage/Shelf";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -46,6 +47,7 @@ const App = () => {
               <Reviews />
             </ProtectedRoute>
           } />
+          <Route path="/shelf" element={<Shelf />} />
         </Routes>
       </main>
       <Footer />
