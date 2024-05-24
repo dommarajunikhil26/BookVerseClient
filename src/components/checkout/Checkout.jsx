@@ -1,8 +1,9 @@
+
 import { useDispatch, useSelector } from "react-redux";
 import BookDescription from "./BookDescription";
 import CheckoutAndReviewBox from "./CheckoutAndReviewBox";
 import LatestReviews from "./LatestReviews";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchReviews } from "../redux/reviewSlice";
 import { useLocation } from "react-router-dom";
 
@@ -12,11 +13,19 @@ const Checkout = () => {
     const { isAuthenticated } = useSelector((state) => state.auth);
     const location = useLocation();
     const { book } = location.state || {};
+    const [latestReviews, setLatestReviews] = useState([]);
 
     useEffect(() => {
         dispatch(fetchReviews());
     }, [dispatch]);
 
+    useEffect(() => {
+        setLatestReviews(reviews);
+    }, [reviews]);
+
+    const handleNewReview = (newReview) => {
+        setLatestReviews((prevReviews) => [newReview, ...prevReviews]);
+    };
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -34,9 +43,9 @@ const Checkout = () => {
         <div className="flex flex-col">
             <div className="flex flex-col md:flex-row ml-2 mr-2 md:ml-6 md:mr-6 md:justify-evenly border-b-[1px]">
                 <BookDescription reviews={reviews} book={book} />
-                <CheckoutAndReviewBox isAuthenticated={isAuthenticated} book={book} />
+                <CheckoutAndReviewBox isAuthenticated={isAuthenticated} book={book} onNewReview={handleNewReview} />
             </div>
-            <LatestReviews reviews={reviews} bookId={book.id} />
+            <LatestReviews reviews={latestReviews} bookId={book.id} />
         </div>
     );
 }
