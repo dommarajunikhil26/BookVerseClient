@@ -64,6 +64,11 @@ const CheckoutAndReviewBox = ({ isAuthenticated, book }) => {
         }
     };
 
+    const updateCurrentLoans = async () => {
+        const loans = await currentLoans();
+        setCurrentBookLoans(loans);
+    };
+
     const handleSignInButtonClick = () => {
         navigate("/signin");
     };
@@ -72,11 +77,12 @@ const CheckoutAndReviewBox = ({ isAuthenticated, book }) => {
         const checkedOut = await checkoutBook(bookId);
         if (checkedOut) {
             setIsCheckedOut(true);
+            await updateCurrentLoans();  // Update the current loans count after successful checkout
         }
     };
 
     return (
-        <div className="w-full md:w-1/4 h-[250px] md:h-[300px] md:mt-10 border-2 drop-shadow-2xl flex flex-col items-center">
+        <div className="w-full md:w-1/4 h-[250px] md:h-[350px] md:mt-10 border-2 drop-shadow-2xl flex flex-col items-center">
             <div className="w-[90%] border-b-[1px] pt-2">
                 <p className="text-md md:text-xl">{currentBookLoans}/5 books checked out</p>
             </div>
@@ -89,11 +95,11 @@ const CheckoutAndReviewBox = ({ isAuthenticated, book }) => {
                 {isAuthenticated ?
                     (
                         isCheckedOut ?
-                            (<p>Book has been checked out</p>)
+                            (<p className="font-bold">Book checked out. Enjoy!</p>)
                             :
                             (currentBookLoans <= 5 ? <button className='p-2 my-4 bg-green-700 rounded text-white hover:bg-green-600 w-1/3' onClick={handleCheckoutButtonClick}>
                                 Checkout
-                            </button> : <p>Reached your maximum checkout power</p>)
+                            </button> : <p className="text-red-600">Top many books checked out</p>)
                     )
                     :
                     (<button className='p-2 my-4 bg-green-700 rounded text-white hover:bg-green-600 w-1/3' onClick={handleSignInButtonClick}>

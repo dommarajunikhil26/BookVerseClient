@@ -7,7 +7,7 @@ export const fetchReviews = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const response = await axiosInstance.get('/reviews');
-            return response.data;
+            return response.data._embedded.reviews;
         } catch (error) {
             return rejectWithValue(error.message);
         }
@@ -17,7 +17,7 @@ export const fetchReviews = createAsyncThunk(
 const reviewSlice = createSlice({
     name: 'reviews',
     initialState: {
-        reviews: [], // Make sure this is an empty array
+        reviews: [],
         isLoading: false,
         error: null,
     },

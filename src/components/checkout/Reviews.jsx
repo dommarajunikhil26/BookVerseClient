@@ -20,7 +20,7 @@ const Reviews = () => {
             <h1 className="text-lg md:text-2xl font-bold">All Reviews:</h1>
             {bookReviews.map((review) => (
                 <div key={review.id} className="w-[90%] md:w-[70%] border-b-[1px] p-4">
-                    <p className="text-md md:text-lg font-bold">{review.userEmail}</p>
+                    <p className="text-md md:text-lg font-bold">{review.userEmail || 'Anonymous'}</p>
                     <p className="text-sm md:text-md">{new Date(review.date).toLocaleDateString()}</p>
                     <p className="text-md md:text-lg">{review.reviewDescription}</p>
                     <StarsRating reviewRating={review.rating} />
