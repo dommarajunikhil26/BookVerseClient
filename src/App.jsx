@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { checkAuthState } from './components/redux/authSlice';
 import Footer from "./components/header_footer/Footer";
@@ -12,13 +12,23 @@ import SearchBooks from "./components/searchBooks/SearchBooks";
 import Checkout from "./components/checkout/Checkout";
 import Reviews from "./components/checkout/Reviews";
 import ProtectedRoute from './components/utility/ProtectedRoute';
+import { Loading } from "./components/utility/Tools";
 
 const App = () => {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    dispatch(checkAuthState());
+    const checkAuth = async () => {
+      await dispatch(checkAuthState());
+      setLoading(false);
+    };
+    checkAuth();
   }, [dispatch]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="flex flex-col min-h-screen">

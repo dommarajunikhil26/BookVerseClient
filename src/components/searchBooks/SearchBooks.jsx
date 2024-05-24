@@ -6,6 +6,7 @@ import SearchBar from "./SearchBar";
 import CategoryDropdown from "./CategoryDropdown";
 import BookList from "./BookList";
 import Pagination from "./Pagination";
+import { Loading } from "../utility/Tools";
 
 const SearchBooks = () => {
     const { books, isLoading, error, totalItems } = useSelector((state) => state.books);
@@ -55,9 +56,7 @@ const SearchBooks = () => {
 
     if (isLoading) {
         return (
-            <div className='h-[500px] w-full border-2 border-black flex items-center justify-center'>
-                <p className='text-3xl'>Loading ...</p>
-            </div>
+            <Loading />
         );
     }
 
