@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import SearchBar from "./SearchBar";
 import CategoryDropdown from "./CategoryDropdown";
 import BookList from "./BookList";
-import Pagination from "./Pagination";
+import Pagination from "../utility/Pagination";
 import { Loading } from "../utility/Tools";
 
 const SearchBooks = () => {
