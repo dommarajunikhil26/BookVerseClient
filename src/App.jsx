@@ -15,12 +15,13 @@ import ProtectedRoute from './components/utility/ProtectedRoute';
 import { Loading } from "./components/utility/Tools";
 import Shelf from "./components/shelfPage/Shelf";
 import LibraryServices from "./components/libraryServices/LibraryServices";
+import ManageLibraryPage from "./components/manageLibraryPage/ManageLibraryPage";
 
 const App = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const { isAuthenticated, error } = useSelector((state) => state.auth);
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -62,8 +63,11 @@ const App = () => {
             </ProtectedRoute>
           } />
           <Route path="/messages" element={
-            <LibraryServices />
+            <ProtectedRoute>
+              <LibraryServices />
+            </ProtectedRoute>
           } />
+          <Route path="/admin" element={<ManageLibraryPage />} />
         </Routes>
       </main>
       <Footer />

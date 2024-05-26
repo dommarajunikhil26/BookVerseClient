@@ -9,7 +9,7 @@ const LibararyServices = () => {
 
     const handleButtonClick = () => {
         if (isAuthenticated) {
-            navigate("/libraryServices");
+            navigate("/messages");
         } else {
             navigate("/signin");
         }
