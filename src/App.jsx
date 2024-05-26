@@ -1,6 +1,6 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { checkAuthState } from './components/redux/authSlice';
 import Footer from "./components/header_footer/Footer";
 import Header from "./components/header_footer/Header";
@@ -14,10 +14,13 @@ import Reviews from "./components/checkout/Reviews";
 import ProtectedRoute from './components/utility/ProtectedRoute';
 import { Loading } from "./components/utility/Tools";
 import Shelf from "./components/shelfPage/Shelf";
+import LibraryServices from "./components/libraryServices/LibraryServices";
 
 const App = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const { isAuthenticated, error } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -26,6 +29,12 @@ const App = () => {
     };
     checkAuth();
   }, [dispatch]);
+
+  useEffect(() => {
+    if (!isAuthenticated && !loading) {
+      navigate("/signin");
+    }
+  }, [isAuthenticated, loading, navigate]);
 
   if (loading) {
     return <Loading />;
@@ -47,7 +56,14 @@ const App = () => {
               <Reviews />
             </ProtectedRoute>
           } />
-          <Route path="/shelf" element={<Shelf />} />
+          <Route path="/shelf" element={
+            <ProtectedRoute>
+              <Shelf />
+            </ProtectedRoute>
+          } />
+          <Route path="/messages" element={
+            <LibraryServices />
+          } />
         </Routes>
       </main>
       <Footer />

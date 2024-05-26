@@ -24,6 +24,7 @@ const PurchaseHistory = () => {
                     });
                     setHistories(response.data._embedded.histories);
                     setTotalItems(response.data.page.totalElements);
+                    setSize(response.data.page.size);
                 } catch (error) {
                     console.error('Error while fetching histories: ', error);
                 }
