@@ -67,7 +67,11 @@ const App = () => {
               <LibraryServices />
             </ProtectedRoute>
           } />
-          <Route path="/admin" element={<ManageLibraryPage />} />
+          <Route path="/admin" element={
+            <ProtectedRoute adminOnly>
+              <ManageLibraryPage />
+            </ProtectedRoute>
+          } />
         </Routes>
       </main>
       <Footer />

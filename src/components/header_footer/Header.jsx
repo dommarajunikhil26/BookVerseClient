@@ -9,7 +9,7 @@ const Header = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const { isAuthenticated } = useSelector((state) => state.auth);
+    const { isAuthenticated, user } = useSelector((state) => state.auth);
 
     const handleMenuClick = () => {
         setClicked(!clicked)
@@ -73,8 +73,12 @@ const Header = () => {
                                 {/* <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" --> */}
                                 <button className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium" onClick={handleHomeClick}>Home</button>
                                 <button className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium" onClick={handleSearchClick}>Search Books</button>
-                                <button className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium" onClick={handleShelfClick}>Shelf</button>
-                                <button className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium" onClick={handleAdminClick}>Admin</button>
+                                {isAuthenticated && (
+                                    <button className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium" onClick={handleShelfClick}>Shelf</button>
+                                )}
+                                {isAuthenticated && user.claims?.admin && (
+                                    <button className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium" onClick={handleAdminClick}>Admin</button>
+                                )}
                             </div>
                         </div>
                     </div>

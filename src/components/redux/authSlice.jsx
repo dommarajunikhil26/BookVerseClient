@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updatePassword, onAuthStateChanged } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updatePassword, onAuthStateChanged, getIdTokenResult } from "firebase/auth";
 import { auth } from "../firebase/Firebase";
 
 const initialState = {
@@ -14,6 +14,7 @@ const extractUserInfo = (user) => ({
     email: user.email,
     displayName: user.displayName,
     photoURL: user.photoURL,
+    claims: user.claims
 });
 
 // Thunks
@@ -22,7 +23,9 @@ export const loginUser = createAsyncThunk(
     async ({ email, password }, { rejectWithValue }) => {
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            const userInfo = extractUserInfo(userCredential.user);
+            const user = userCredential.user;
+            const tokenResult = await getIdTokenResult(user);
+            const userInfo = extractUserInfo({ ...user, claims: tokenResult.claims });
             return userInfo;
         } catch (error) {
             return rejectWithValue(error.message);
@@ -47,7 +50,9 @@ export const registerUser = createAsyncThunk(
     async ({ email, password }, { rejectWithValue }) => {
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            const userInfo = extractUserInfo(userCredential.user);
+            const user = userCredential.user;
+            const tokenResult = await getIdTokenResult(user);
+            const userInfo = extractUserInfo({ ...user, claims: tokenResult.claims });
             return userInfo;
         } catch (error) {
             return rejectWithValue(error.message);
@@ -76,9 +81,10 @@ export const checkAuthState = createAsyncThunk(
     'auth/checkAuthState',
     async (_, { dispatch }) => {
         return new Promise((resolve, reject) => {
-            onAuthStateChanged(auth, (user) => {
+            onAuthStateChanged(auth, async (user) => {
                 if (user) {
-                    const userInfo = extractUserInfo(user);
+                    const tokenResult = await getIdTokenResult(user);
+                    const userInfo = extractUserInfo({ ...user, claims: tokenResult.claims });
                     dispatch(setUser(userInfo));
                     resolve(userInfo);
                 } else {

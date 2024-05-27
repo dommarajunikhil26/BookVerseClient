@@ -2,7 +2,11 @@
 
 const AddNewBooks = () => {
     return (
-        <div>AddNewBooks</div>
+        <div className="flex justify-center">
+            <div className="w-[90%]">
+                Add New Books
+            </div>
+        </div>
     )
 }
 
