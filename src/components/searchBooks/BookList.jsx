@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 import { useNavigate } from 'react-router-dom';
-import NoBooks from './NoBooks';
+import { Container } from '../utility/Tools';
 
 const BookList = ({ books, totalItems }) => {
     const navigate = useNavigate();
 
     if (totalItems === 0) {
-        return <NoBooks />;
+        return (<Container textMessage="Sorry no books found" />);
     }
 
     const handleButtonClick = (book) => {

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axiosInstance from '../utility/AxiosInstance';
 import { useSelector } from "react-redux";
 import Pagination from "../utility/Pagination";
+import { Container } from '../utility/Tools';
 
 const PurchaseHistory = () => {
     const { user } = useSelector((state) => state.auth);
@@ -53,10 +54,10 @@ const PurchaseHistory = () => {
         <div>
             <div>
                 {histories.length === 0 ? (
-                    <div>No Books returned</div>
+                    <Container textMessage="No books checked out yet." />
                 ) : (
-                    histories.map((history) => (
-                        <div key={history.id} className="flex justify-center">
+                    histories.map((history, index) => (
+                        <div key={`${history.userEmail}-${history.checkoutDate}-${index}`} className="flex justify-center">
                             <div className="w-[90%]">
                                 <div className="border shadow-xl rounded-lg my-4 p-4 flex flex-col md:flex-row justify-evenly items-center">
                                     <div className="pb-4 md:pb-0 w-full md:w-1/3 flex justify-center md:justify-normal">
@@ -80,14 +81,16 @@ const PurchaseHistory = () => {
                 )}
             </div>
 
-            <Pagination
-                page={page}
-                size={size}
-                totalItems={totalItems}
-                handlePreviousPage={handlePreviousPage}
-                handleNextPage={handleNextPage}
-                handlePageChange={handlePageChange}
-            />
+            {totalItems > 0 && (
+                <Pagination
+                    page={page}
+                    size={size}
+                    totalItems={totalItems}
+                    handlePreviousPage={handlePreviousPage}
+                    handleNextPage={handleNextPage}
+                    handlePageChange={handlePageChange}
+                />
+            )}
         </div>
     )
 }

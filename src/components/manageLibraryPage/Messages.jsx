@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import axiosInstance from '../utility/AxiosInstance';
 import Pagination from "../utility/Pagination";
 import { useEffect, useState } from "react";
+import { Container } from "../utility/Tools";
 
 const Messages = () => {
     const { isAuthenticated } = useSelector((state) => state.auth);
@@ -32,7 +33,7 @@ const Messages = () => {
 
     useEffect(() => {
         fetchUserMessages();
-    }, [isAuthenticated, page, size]);
+    });
 
     const handlePreviousPage = () => {
         if (page > 0) {
@@ -69,7 +70,7 @@ const Messages = () => {
                 ...prevFields,
                 [id]: '',
             }));
-            fetchUserMessages(); // Refetch messages after a successful submission
+            fetchUserMessages();
         } catch (error) {
             console.error('Error while putting questions response', error);
         }
@@ -77,12 +78,10 @@ const Messages = () => {
 
     return (
         <div>
-            <h1 className="text-lg font-semibold">Pending Q/A: </h1>
+            <h1 className="ml-4 md:ml-16 mt-4">Pending Q/A: </h1>
             <div>
                 {messages.length === 0 ? (
-                    <div>
-                        <p>No Questions Found</p>
-                    </div>
+                    <Container textMessage="No Questions available at this time from users." />
                 ) : (
                     messages.map((message) => (
                         <div key={message.id} className='flex justify-center my-2'>
@@ -117,15 +116,16 @@ const Messages = () => {
                     ))
                 )}
             </div>
-
-            <Pagination
-                page={page}
-                size={size}
-                totalItems={totalItems}
-                handlePreviousPage={handlePreviousPage}
-                handleNextPage={handleNextPage}
-                handlePageChange={handlePageChange}
-            />
+            {messages.length > 0 && (
+                <Pagination
+                    page={page}
+                    size={size}
+                    totalItems={totalItems}
+                    handlePreviousPage={handlePreviousPage}
+                    handleNextPage={handleNextPage}
+                    handlePageChange={handlePageChange}
+                />
+            )}
         </div>
     );
 };

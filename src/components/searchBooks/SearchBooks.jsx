@@ -78,14 +78,16 @@ const SearchBooks = () => {
                 <p>Number of results: {totalItems}</p>
             </div>
             <BookList books={books} totalItems={totalItems} />
-            <Pagination
-                page={page}
-                size={size}
-                totalItems={totalItems}
-                handlePreviousPage={handlePreviousPage}
-                handleNextPage={handleNextPage}
-                handlePageChange={handlePageChange}
-            />
+            {totalItems > 0 && (
+                <Pagination
+                    page={page}
+                    size={size}
+                    totalItems={totalItems}
+                    handlePreviousPage={handlePreviousPage}
+                    handleNextPage={handleNextPage}
+                    handlePageChange={handlePageChange}
+                />
+            )}
         </div>
     );
 }

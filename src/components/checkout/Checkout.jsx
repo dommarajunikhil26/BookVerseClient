@@ -5,7 +5,7 @@ import LatestReviews from "./LatestReviews";
 import { useEffect, useState } from "react";
 import { fetchReviews } from "../redux/reviewSlice";
 import { useParams } from "react-router-dom";
-import { Loading } from "../utility/Tools";
+import { Container, Loading } from "../utility/Tools";
 import axiosInstance from "../utility/AxiosInstance";
 
 const Checkout = () => {
@@ -43,11 +43,11 @@ const Checkout = () => {
     }
 
     if (error) {
-        return <div>Error: {error}</div>;
+        return <Container textMessage={`Error: ${error}`} />;
     }
 
     if (!book) {
-        return <div>No book details available</div>;
+        return <Container textMessage="No book details available" />;
     }
 
     return (

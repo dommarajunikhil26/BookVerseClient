@@ -21,7 +21,7 @@ const ManageLoanModal = ({ book, daysLeft, onClose, onBookReturn, onBookRenew })
                 params: { bookId: book.id }
             });
             console.log('Book renewed successfully', response.data);
-            onBookRenew(book.id, daysLeft + 7); // Assuming renewal adds 7 days
+            onBookRenew(book.id, daysLeft + 7);
             onClose();
         } catch (error) {
             console.error("Error while renewing the book", error);

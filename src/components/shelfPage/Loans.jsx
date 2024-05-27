@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../utility/AxiosInstance";
 import LoanOptions from "./LoanOptions";
+import { Container } from "../utility/Tools";
 
 const Loans = () => {
     const [loansData, setLoansData] = useState([]);
@@ -39,9 +40,7 @@ const Loans = () => {
                 <h1 className="font-bold text-2xl my-4">Current Loans:</h1>
                 {loansData.length === 0 ?
                     (
-                        <div>
-                            <p className="font-bold">No Loans exist</p>
-                        </div>
+                        <Container textMessage="No loans exist at this time" />
                     )
                     :
                     (
