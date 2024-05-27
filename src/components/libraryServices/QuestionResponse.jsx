@@ -65,7 +65,7 @@ const QuestionResponse = () => {
                                 </div>
                                 <div className='ml-4 mr-4 border-t-2 py-4'>
                                     <p className='font-semibold text-lg'>Response:</p>
-                                    <p className='text-sm italic'>Pending response from administration. Please be patient.</p>
+                                    <p className='text-sm italic'>{message.response !== null ? (message.response) : "Pending response from administration. Please be patient."}</p>
                                 </div>
                             </div>
                         </div>
