@@ -41,9 +41,7 @@ const Loans = () => {
                 {loansData.length === 0 ?
                     (
                         <Container textMessage="No loans exist at this time" />
-                    )
-                    :
-                    (
+                    ) : (
                         loansData.map((loan) => (
                             <div key={loan.book.id} className="border shadow-lg rounded-lg my-4 p-4 flex flex-col md:flex-row justify-evenly items-center">
                                 <div className="pb-4 md:pb-0">
