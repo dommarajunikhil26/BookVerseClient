@@ -6,7 +6,7 @@ import SearchBar from "./SearchBar";
 import CategoryDropdown from "./CategoryDropdown";
 import BookList from "./BookList";
 import Pagination from "../utility/Pagination";
-import { Loading } from "../utility/Tools";
+import { Container, Loading } from "../utility/Tools";
 
 const SearchBooks = () => {
     const { books, isLoading, error, totalItems } = useSelector((state) => state.books);
@@ -62,9 +62,7 @@ const SearchBooks = () => {
 
     if (error) {
         return (
-            <div className='h-[400px] w-[400px] border-2 border-black'>
-                <p>{error}</p>
-            </div>
+            <Container textMessage={error} />
         );
     }
 
