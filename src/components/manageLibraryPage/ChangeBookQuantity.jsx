@@ -1,8 +1,10 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Loading } from '../utility/Tools';
 import Pagination from "../utility/Pagination";
 import { fetchBooks } from "../redux/bookSlice";
+import axiosInstance from '../utility/AxiosInstance';
 
 const ChangeBookQuantity = () => {
     const { books, isLoading, error, totalItems } = useSelector((state) => state.books);
@@ -43,17 +45,50 @@ const ChangeBookQuantity = () => {
         );
     }
 
-    const handleDeleteButtonClick = (e) => {
-        console.log(e);
+    const handleDeleteButtonClick = async (book) => {
+        try {
+            const response = await axiosInstance.delete(`/admin/secure/delete/book`, {
+                params: {
+                    bookId: book.id
+                }
+            });
+            if (response.status === 200) {
+                dispatch(fetchBooks({ page, size }));
+            }
+        } catch (error) {
+            console.error('Error deleting book:', error);
+        }
     };
 
-    const handleAddButtonClick = (e) => {
-        console.log(e);
-    }
+    const handleAddButtonClick = async (book) => {
+        try {
+            const response = await axiosInstance.put(`/admin/secure/increase/book/quantity`, null, {
+                params: {
+                    bookId: book.id
+                }
+            });
+            if (response.status === 200) {
+                dispatch(fetchBooks({ page, size }));
+            }
+        } catch (error) {
+            console.error('Error increasing book quantity:', error);
+        }
+    };
 
-    const handleDecreaseButtonClick = (e) => {
-        console.log(e);
-    }
+    const handleDecreaseButtonClick = async (book) => {
+        try {
+            const response = await axiosInstance.put(`/admin/secure/decrease/book/quantity`, null, {
+                params: {
+                    bookId: book.id
+                }
+            });
+            if (response.status === 200) {
+                dispatch(fetchBooks({ page, size }));
+            }
+        } catch (error) {
+            console.error('Error decreasing book quantity:', error);
+        }
+    };
 
     return (
         <div>
@@ -67,7 +102,7 @@ const ChangeBookQuantity = () => {
                             <div className="w-full mt-2 mb-2 md:mt-0 md:mb-0 md:w-2/4 flex flex-col justify-center md:justify-normal my-auto pl-4">
                                 <h1 className='text-xl md:text-2xl font-bold'>{book.author}</h1>
                                 <h1 className='text-xl md:text-2xl font-bold'>{book.title}</h1>
-                                <p>{book.description}</p>
+                                <p className="text-sm md:text-md">{book.description}</p>
                             </div>
                             <div className="mt-2">
                                 <p className="mb-2">Total Quantity: {book.copies}</p>
@@ -105,7 +140,7 @@ const ChangeBookQuantity = () => {
                 />
             )}
         </div>
-    )
+    );
 }
 
-export default ChangeBookQuantity
+export default ChangeBookQuantity;
